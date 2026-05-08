@@ -1,28 +1,58 @@
 import http from 'node:http';
-import fs from 'node:fs/promises';
-import { runAgent } from './agent.js';
+import { runAgent, buildCloudRunManifest } from './agent.js';
 
 const PORT = process.env.PORT || 8787;
 
-function page(items) {
-  const rows = items.map(x => `<tr><td><b>${x.priority}</b><br/>${x.score}</td><td><a href="${x.url}">${x.title}</a><br/><small>${x.platform} · ${x.type}</small></td><td>${x.deadline}<br/><b>${x.reward}</b></td><td>${x.actionPlan.slice(0,3).map(s=>`<li>${s}</li>`).join('')}</td></tr>`).join('');
-  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Hackathon Scout Agent</title><style>body{font-family:Inter,system-ui,sans-serif;margin:0;background:#0b1020;color:#eef2ff}.hero{padding:48px;background:linear-gradient(135deg,#2563eb,#7c3aed)}main{padding:28px}table{width:100%;border-collapse:collapse;background:#111827;border-radius:16px;overflow:hidden}td,th{padding:16px;border-bottom:1px solid #263244;vertical-align:top}a{color:#93c5fd}.pill{display:inline-block;padding:6px 10px;background:#10b981;border-radius:999px;color:#04120d;font-weight:700}</style></head><body><section class="hero"><span class="pill">Gemini-ready Google Cloud Agent Builder concept</span><h1>Hackathon Scout Agent</h1><p>Monitors AI/Web3 hackathons and bounties, ranks ROI, prepares application packets, and keeps humans in control for final submission.</p></section><main><h2>Opportunity Queue</h2><table><tr><th>Priority</th><th>Opportunity</th><th>Deadline / Reward</th><th>Next Actions</th></tr>${rows}</table><h2>Agent workflow</h2><ol><li>Collect from Devpost, DoraHacks, Superteam, Kaggle and other sources.</li><li>Use Gemini reasoning to score fit, reward, deadline risk and build effort.</li><li>Generate application packet, repo checklist, demo-video script and submission form copy.</li><li>Human approves registration/submission to avoid unauthorized account or wallet actions.</li></ol></main></body></html>`;
+function escapeHtml(value = '') {
+  return String(value).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
 }
 
-const server = http.createServer(async (req, res) => {
-  try {
-    if (req.url === '/api/opportunities') {
-      const items = await runAgent();
-      res.writeHead(200, { 'content-type': 'application/json' });
-      return res.end(JSON.stringify(items, null, 2));
-    }
-    const items = await runAgent();
-    res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    res.end(page(items));
-  } catch (err) {
-    res.writeHead(500, { 'content-type': 'text/plain' });
-    res.end(err.stack || String(err));
-  }
-});
+function page(items) {
+  const top = items[0];
+  const kit = top?.submissionKit;
+  const rows = items.map(x => `<tr>
+    <td><b>${x.priority}</b><br/><span class="score">${x.score}</span></td>
+    <td><a href="${escapeHtml(x.url)}">${escapeHtml(x.title)}</a><br/><small>${escapeHtml(x.platform)} · ${escapeHtml(x.type)} · ${escapeHtml(x.sourceMode || 'fallback')}</small></td>
+    <td>${escapeHtml(x.deadline)}<br/><b>${escapeHtml(x.reward)}</b></td>
+    <td>${x.actionPlan.slice(0,3).map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</td>
+    <td><small>${escapeHtml(x.evidence?.source)}<br/>${escapeHtml(x.evidence?.url)}</small></td>
+  </tr>`).join('');
+  const judging = kit?.judgingMap.map(x => `<li><b>${escapeHtml(x.criterion)}:</b> ${escapeHtml(x.evidence)}</li>`).join('') || '';
+  const approvals = kit?.humanApprovalRequired.map(x => `<li>${escapeHtml(x)}</li>`).join('') || '';
+  return `<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Hackathon Scout Agent</title><style>
+    body{font-family:Inter,system-ui,sans-serif;margin:0;background:#08111f;color:#eef2ff}.hero{padding:56px;background:radial-gradient(circle at top left,#22c55e,transparent 32%),linear-gradient(135deg,#2563eb,#7c3aed)}main{padding:28px;max-width:1200px;margin:auto}table{width:100%;border-collapse:collapse;background:#111827;border-radius:16px;overflow:hidden}td,th{padding:16px;border-bottom:1px solid #263244;vertical-align:top}a{color:#93c5fd}.pill{display:inline-block;padding:6px 10px;background:#10b981;border-radius:999px;color:#04120d;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}.card{background:#111827;border:1px solid #263244;border-radius:16px;padding:18px}.score{font-size:28px;color:#86efac;font-weight:900}code{background:#020617;padding:3px 6px;border-radius:6px}
+  </style></head><body><section class="hero"><span class="pill">Gemini-ready · Cloud Run deployable · MCP-aware</span><h1>Hackathon Scout Agent</h1><p>Monitors AI/Web3 hackathons and bounties, ranks expected ROI, generates evidence-backed application packets, and keeps humans in control for sensitive submissions.</p></section><main>
+  <section class="grid"><div class="card"><h2>Top recommendation</h2><h3>${escapeHtml(top?.title)}</h3><p><b>${top?.priority}</b> · score ${top?.score} · ${escapeHtml(top?.reward)}</p><p>${escapeHtml(top?.pitch)}</p></div><div class="card"><h2>Judge-ready submission kit</h2><p>${escapeHtml(kit?.tagline)}</p><p><a href="/api/submission-kit">/api/submission-kit</a> · <a href="/api/cloud-run">/api/cloud-run</a></p></div><div class="card"><h2>Human approval boundary</h2><ul>${approvals}</ul></div></section>
+  <h2>Opportunity Queue</h2><table><tr><th>Priority</th><th>Opportunity</th><th>Deadline / Reward</th><th>Next Actions</th><th>Evidence</th></tr>${rows}</table>
+  <section class="grid"><div class="card"><h2>Agent workflow</h2><ol><li>Collect public opportunities with live API first and curated fallback second.</li><li>Score fit, reward, deadline risk, online availability, and build effort.</li><li>Generate packet, pitch, judging map, Cloud Run path, and demo script.</li><li>Ask for human approval before registration, wallet, KYC, or final submission.</li></ol></div><div class="card"><h2>Judging map</h2><ul>${judging}</ul></div><div class="card"><h2>Google Cloud path</h2><p><code>gcloud run deploy hackathon-scout-agent --source .</code></p><p>Cloud Scheduler can hit <code>/api/opportunities</code>; Firestore can replace local JSON; Gemini can replace deterministic packet generation.</p></div></section>
+  </main></body></html>`;
+}
 
-server.listen(PORT, () => console.log(`Hackathon Scout Agent running on http://localhost:${PORT}`));
+function json(res, payload) {
+  res.writeHead(200, { 'content-type': 'application/json' });
+  res.end(JSON.stringify(payload, null, 2));
+}
+
+export function createAppServer() {
+  return http.createServer(async (req, res) => {
+    try {
+      const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
+      if (url.pathname === '/api/opportunities') return json(res, await runAgent());
+      if (url.pathname === '/api/submission-kit') {
+        const items = await runAgent();
+        return json(res, items[0].submissionKit);
+      }
+      if (url.pathname === '/api/cloud-run') return json(res, buildCloudRunManifest({}));
+      const items = await runAgent();
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+      res.end(page(items));
+    } catch (err) {
+      res.writeHead(500, { 'content-type': 'text/plain' });
+      res.end(err.stack || String(err));
+    }
+  });
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  createAppServer().listen(PORT, () => console.log(`Hackathon Scout Agent running on http://localhost:${PORT}`));
+}

@@ -6,8 +6,17 @@
   "scripts": {
     "start": "node src/server.js",
     "demo": "node src/agent.js",
-    "test": "node --test"
+    "test": "node --test",
+    "check": "npm test"
   },
-  "keywords": ["ai-agent", "gemini", "google-cloud", "hackathon", "web3", "bounty", "mcp"],
+  "keywords": [
+    "ai-agent",
+    "gemini",
+    "google-cloud",
+    "hackathon",
+    "web3",
+    "bounty",
+    "mcp"
+  ],
   "license": "MIT"
 }
