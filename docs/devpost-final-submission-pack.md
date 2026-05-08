@@ -62,13 +62,14 @@ Recommended video outline:
 
 ## Track selection
 
-Recommended track: GitLab MCP or MongoDB MCP.
+Recommended final track to build toward: **MongoDB MCP**.
 
-Best fit based on current MVP:
-- GitLab MCP: if emphasizing turning action plans into repo issues/build tasks.
-- MongoDB MCP: if emphasizing persistent opportunity packets and evidence history.
+Rationale:
+- The scout-agent's core value is persistent opportunity/evidence history, score changes, submission packets, and human-approval state.
+- MongoDB MCP maps more directly to that data model than GitLab MCP.
+- GitLab MCP remains a fallback if the final build emphasizes converting generated action plans into repo issues/build tasks.
 
-The current project text mentions both; choose one final track before submitting. If forced to choose today, use MongoDB MCP if persistence/evidence is the core story, or GitLab MCP if project-management automation is the core story.
+Do not overclaim the partner requirement in the final Devpost form. The official rules require a functional agent powered by Gemini and Google Cloud Agent Builder that integrates a Partner Entity's MCP server. Before final submission, either implement a real MongoDB MCP-backed persistence path or adjust the track/story to match the integration that actually exists.
 
 ## Inspiration
 
