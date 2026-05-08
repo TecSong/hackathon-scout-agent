@@ -2,11 +2,12 @@
 
 Status: prepared, not officially submitted.
 
-Reason submission is paused:
-- The official rules for Google Cloud Rapid Agent Hackathon state: "CONTEST IS OPEN TO EVERYONE EXCEPT FOR RESIDENTS OF ... CHINA ...".
-- The user confirmed residence as China on 2026-05-08.
-- Because the restriction is residence-based, this project should not be officially joined/submitted to this specific Devpost contest unless the organizer grants written eligibility clarification.
-- Official submission requires accepting rules/terms; do not accept or submit while the confirmed residence is China.
+Eligibility status:
+- The official rules for Google Cloud Rapid Agent Hackathon state: "CONTEST IS OPEN TO EVERYONE EXCEPT FOR RESIDENTS OF ... CHINA ..." and other listed regions.
+- The user confirmed current residence as Japan on 2026-05-08.
+- Japan was not found in the listed excluded resident regions during the 2026-05-08 rules check.
+- Nationality and residence can be different; final Devpost Join/Submit and rules acceptance still require explicit user authorization.
+- Prize payout must be checked before final submission: the user does not have PayPal or an international bank card; available payout rails are Web3 wallet, U card, and Hong Kong bank account.
 
 ## Hackathon
 
@@ -126,9 +127,10 @@ Agents are most useful when they turn vague intent into next actions with eviden
 
 Do not click final Submit until all are resolved:
 
-- [ ] User confirms they are not a resident of an excluded territory, especially China.
+- [x] User confirms they are not a resident of an excluded territory for Google Cloud Rapid Agent Hackathon: current residence Japan; Japan was not found in the excluded resident list on 2026-05-08.
 - [ ] User explicitly agrees to the official rules/terms.
-- [ ] GitHub repo is public.
+- [x] GitHub repo is public.
 - [ ] Demo video URL is available.
 - [ ] Final partner track selected.
+- [ ] Prize payout path confirmed: must support Web3 wallet, U card, Hong Kong bank, or another user-approved non-PayPal/non-international-card method.
 - [ ] Devpost form preview reviewed by user.
