@@ -1,0 +1,13 @@
+{
+  "name": "hackathon-scout-agent",
+  "version": "0.1.0",
+  "description": "Gemini-ready agent that finds, ranks, and prepares applications for AI/Web3 hackathons and bounties.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "demo": "node src/agent.js",
+    "test": "node --test"
+  },
+  "keywords": ["ai-agent", "gemini", "google-cloud", "hackathon", "web3", "bounty", "mcp"],
+  "license": "MIT"
+}
