@@ -1,6 +1,6 @@
 # Target opportunities due diligence
 
-Last checked: 2026-05-08T11:43Z
+Last checked: 2026-05-08T12:10Z
 
 This file tracks public-rule findings for the active hackathon/bounty queue. It is a working aid for final submission prep; it is not proof of registration or acceptance of terms.
 
@@ -52,6 +52,7 @@ Primary public links:
 ### Public status
 
 - Deadline stated in article: May 19, 2026.
+- Challenge page rechecked on 2026-05-08T12:10Z: anyone can enter, free API key, no credit card required, build with REST API or MCP, submit via GitHub issue template.
 - Challenge: build an AI shopping agent using BuyWhere product catalog API or MCP tools.
 - How to enter from public page: get a free API key, build using REST API or MCP server, then open a GitHub issue with repo URL, demo link, and short description.
 - Judging criteria from challenge page:
@@ -66,6 +67,7 @@ Primary public links:
 - Runner-up/community prizes: API credits, swag, social recognition.
 - This is **not a cash/Web3 payout opportunity**. Shipping hardware to Japan and customs/tax handling are not clarified in public text.
 - Because the main reward is hardware/API credits, this is lower priority than cash/Web3-compatible bounties unless the build is very small or can reuse existing scout-agent work.
+- Working submission draft created at `docs/buywhere-submission-draft.md`; recommended angle is a small `Prize Fit Shopping Agent` side demo using live BuyWhere data.
 
 ### Feasibility notes
 
@@ -88,6 +90,7 @@ URL: https://medo.devpost.com/
 ### Public status
 
 - Deadline: May 20, 2026 at 9:00am EDT.
+- Rules rechecked on 2026-05-08T12:10Z: registration/submission period ends May 20, 2026 at 9:00am Eastern Time; winners announced around June 7, 2026 at 10:00am Eastern Time.
 - Prize pool: $50,000+ cash and other prizes.
 - Public participants observed: 6,431.
 - Required/optional deliverables from public page/rules:
@@ -110,6 +113,7 @@ URL: https://medo.devpost.com/
 
 - This is not a natural fit for the current Node/Cloud Run scout-agent because submissions must be built with MeDo.
 - Better route: create a separate MeDo-built app inspired by scout-agent, e.g. a no-code "Opportunity Intake Dashboard" or "Hackathon Submission Checklist" using MeDo-generated UI and plugins/API integrations.
+- Working submission draft created at `docs/medo-submission-draft.md`; recommended category is Work & Productivity.
 - Requires user/account actions: MeDo signup/invite credits, Devpost join/terms, final submission, optional video/social/Discord actions.
 
 ## Current repo/deploy health snapshot

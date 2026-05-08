@@ -32,6 +32,13 @@ test('scoutOpportunities merges live public results with safe fallback and evide
   assert.ok(items[0].score >= 75);
 });
 
+test('curated fallback includes active BuyWhere and MeDo targets', async () => {
+  const fakeFetch = async () => ({ ok: false, json: async () => ({}) });
+  const items = await scoutOpportunities({ fetchImpl: fakeFetch });
+  assert.ok(items.some(item => item.title.includes('Build With BuyWhere')));
+  assert.ok(items.some(item => item.title.includes('Build with MeDo')));
+});
+
 test('generateSubmissionKit creates judge-ready assets and human approval boundaries', () => {
   const packet = buildApplicationPacket({ platform:'Devpost', type:'hackathon', title:'Google Cloud Rapid Agent Hackathon', url:'https://rapid-agent.devpost.com/', deadline:'2026-06-11', reward:'$50,000', tags:['AI','agent','Gemini','Google Cloud'], effort:4 });
   const kit = generateSubmissionKit(packet);

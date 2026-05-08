@@ -7,9 +7,14 @@ function escapeHtml(value = '') {
   return String(value).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
 }
 
+function selectPrimarySubmission(items) {
+  return items.find(item => item.title.includes('Google Cloud Rapid Agent Hackathon')) || items[0];
+}
+
 function page(items) {
   const top = items[0];
-  const kit = top?.submissionKit;
+  const primary = selectPrimarySubmission(items);
+  const kit = primary?.submissionKit;
   const rows = items.map(x => `<tr>
     <td><b>${x.priority}</b><br/><span class="score">${x.score}</span></td>
     <td><a href="${escapeHtml(x.url)}">${escapeHtml(x.title)}</a><br/><small>${escapeHtml(x.platform)} · ${escapeHtml(x.type)} · ${escapeHtml(x.sourceMode || 'fallback')}</small></td>
@@ -40,7 +45,7 @@ export function createAppServer() {
       if (url.pathname === '/api/opportunities') return json(res, await runAgent());
       if (url.pathname === '/api/submission-kit') {
         const items = await runAgent();
-        return json(res, items[0].submissionKit);
+        return json(res, selectPrimarySubmission(items).submissionKit);
       }
       if (url.pathname === '/api/cloud-run') return json(res, buildCloudRunManifest({}));
       const items = await runAgent();

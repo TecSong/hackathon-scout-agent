@@ -5,7 +5,8 @@ const DEVPOST_API = 'https://devpost.com/api/hackathons?status[]=open&sort_by=Re
 
 const FALLBACK_SOURCES = [
   { platform: 'Devpost', sourceMode: 'curated-fallback', type: 'hackathon', title: 'Google Cloud Rapid Agent Hackathon', url: 'https://rapid-agent.devpost.com/', deadline: '2026-06-11 14:00 PDT', reward: '$50,000', tags: ['AI', 'agent', 'Gemini', 'Google Cloud'], effort: 4, organizer: 'Google Cloud', isOnline: true },
-  { platform: 'Devpost', sourceMode: 'curated-fallback', type: 'hackathon', title: 'Build with MeDo Hackathon', url: 'https://medo.devpost.com/', deadline: '2026-05-20', reward: '$50,000', tags: ['AI', 'no-code', 'automation'], effort: 2, organizer: 'MeDo', isOnline: true },
+  { platform: 'BuyWhere', sourceMode: 'curated-fallback', type: 'developer_challenge', title: 'Build With BuyWhere: AI Agent Developer Challenge', url: 'https://buywhere.ai/challenge/', deadline: '2026-05-19', reward: 'Apple M3 MacBook Air + API credits + swag', tags: ['AI', 'agent', 'commerce', 'MCP', 'API'], effort: 2, organizer: 'BuyWhere', isOnline: true },
+  { platform: 'Devpost', sourceMode: 'curated-fallback', type: 'hackathon', title: 'Build with MeDo Hackathon', url: 'https://medo.devpost.com/', deadline: '2026-05-20 09:00 EDT', reward: '$50,000+ cash and other prizes', tags: ['AI', 'no-code', 'automation', 'MeDo'], effort: 3, organizer: 'Baidu / MeDo', isOnline: true },
   { platform: 'Superteam Earn', sourceMode: 'curated-fallback', type: 'bounty', title: 'Solana AI tooling bounty', url: 'https://earn.superteam.fun/', deadline: 'rolling', reward: 'varies', tags: ['web3', 'solana', 'bounty'], effort: 3, organizer: 'Superteam', isOnline: true },
   { platform: 'DoraHacks', sourceMode: 'curated-fallback', type: 'web3_hackathon', title: 'AI x Web3 BUIDL opportunities', url: 'https://dorahacks.io/hackathon', deadline: 'varies', reward: 'varies', tags: ['web3', 'crypto', 'buidl'], effort: 3, organizer: 'DoraHacks', isOnline: true }
 ];
