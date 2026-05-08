@@ -2,10 +2,11 @@
 
 Status: prepared, not officially submitted.
 
-Reason submission was paused:
+Reason submission is paused:
 - The official rules for Google Cloud Rapid Agent Hackathon state: "CONTEST IS OPEN TO EVERYONE EXCEPT FOR RESIDENTS OF ... CHINA ...".
-- The user profile says nationality China, but Devpost rules restrict residence, not nationality. Residence must be confirmed by the user before joining/submitting.
-- Official submission requires accepting rules/terms; this should be explicitly confirmed by the user.
+- The user confirmed residence as China on 2026-05-08.
+- Because the restriction is residence-based, this project should not be officially joined/submitted to this specific Devpost contest unless the organizer grants written eligibility clarification.
+- Official submission requires accepting rules/terms; do not accept or submit while the confirmed residence is China.
 
 ## Hackathon
 
@@ -35,14 +36,14 @@ Useful API demo URLs:
 https://github.com/TecSong/hackathon-scout-agent
 
 Current repository check:
-- Visibility: PRIVATE at the time this pack was generated.
-- Devpost requires a public open-source code repository for judging/testing.
-- The repository contains a local LICENSE file, but GitHub did not currently detect a license in repo metadata while the repo is private.
+- Visibility: PUBLIC as of 2026-05-08.
+- GitHub license detection: MIT License.
+- Default branch: main.
+- Latest pushed commit after final-pack update: see repository history.
 
-Before final Devpost submission:
-1. Make the GitHub repo public.
-2. Confirm the LICENSE is visible at the repository top level.
-3. Confirm Devpost can access the repo without login.
+Useful public URLs:
+- Repository: https://github.com/TecSong/hackathon-scout-agent
+- License: https://github.com/TecSong/hackathon-scout-agent/blob/main/LICENSE
 
 ## Demo video URL
 
