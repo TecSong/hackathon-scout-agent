@@ -56,7 +56,7 @@ Priority: P1 / conditional.
 
 Reason:
 - Strong cash pool and online format.
-- But current Hackathon Scout Agent is a Node/Cloud Run app, while MeDo requires a working app built using MeDo.
+- But current Hackathon Scout Agent is a Node/local app, while MeDo requires a working app built using MeDo.
 - Best route is not to submit the current repo directly. Build a small MeDo-native companion app inspired by the scout-agent workflow.
 
 ## Recommended MeDo-native project

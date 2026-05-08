@@ -4,7 +4,6 @@ import crypto from 'node:crypto';
 const DEVPOST_API = 'https://devpost.com/api/hackathons?status[]=open&sort_by=Recently+Added';
 
 const FALLBACK_SOURCES = [
-  { platform: 'Devpost', sourceMode: 'curated-fallback', type: 'hackathon', title: 'Google Cloud Rapid Agent Hackathon', url: 'https://rapid-agent.devpost.com/', deadline: '2026-06-11 14:00 PDT', reward: '$50,000', tags: ['AI', 'agent', 'Gemini', 'Google Cloud'], effort: 4, organizer: 'Google Cloud', isOnline: true },
   { platform: 'BuyWhere', sourceMode: 'curated-fallback', type: 'developer_challenge', title: 'Build With BuyWhere: AI Agent Developer Challenge', url: 'https://buywhere.ai/challenge/', deadline: '2026-05-19', reward: 'Apple M3 MacBook Air + API credits + swag', tags: ['AI', 'agent', 'commerce', 'MCP', 'API'], effort: 2, organizer: 'BuyWhere', isOnline: true },
   { platform: 'Devpost', sourceMode: 'curated-fallback', type: 'hackathon', title: 'Build with MeDo Hackathon', url: 'https://medo.devpost.com/', deadline: '2026-05-20 09:00 EDT', reward: '$50,000+ cash and other prizes', tags: ['AI', 'no-code', 'automation', 'MeDo'], effort: 3, organizer: 'Baidu / MeDo', isOnline: true },
   { platform: 'Superteam Earn', sourceMode: 'curated-fallback', type: 'bounty', title: 'Solana AI tooling bounty', url: 'https://earn.superteam.fun/', deadline: 'rolling', reward: 'varies', tags: ['web3', 'solana', 'bounty'], effort: 3, organizer: 'Superteam', isOnline: true },
@@ -77,31 +76,30 @@ export function makeActionPlan(item) {
     `Verify official rules, judging criteria, deadline, eligibility, and required assets for ${item.platform}.`,
     `Capture source evidence from ${item.url} and save deadline/prize notes.`,
     `Create or update public GitHub repo: ${repoSlug}.`,
-    `Build a focused MVP aligned with sponsor APIs, Gemini reasoning, and Google Cloud deployment.`,
+    `Build a focused MVP aligned with sponsor APIs or platform-specific requirements.`,
     `Record a 3 minute demo: problem, live scout run, packet generation, Cloud architecture, impact.`,
     `Human reviews and submits hosted URL, GitHub URL, video URL, selected track, and concise project description.`
   ];
 }
 
 export function generateSubmissionKit(item) {
-  const title = item.title.includes('Google Cloud') ? 'Hackathon Scout Agent' : `Scout packet for ${item.title}`;
+  const title = 'Hackathon Scout Agent';
   return {
     projectTitle: title,
     tagline: 'An agent that discovers high-value hackathons, ranks expected ROI, and generates human-approved submission packets.',
-    shortDescription: 'Hackathon Scout Agent turns fragmented AI/Web3 opportunity discovery into a daily execution queue with scoring, evidence, application packets, and safe human-in-the-loop submission boundaries.',
-    architecture: 'Gemini scores fit and generates submission copy; Cloud Run hosts the dashboard/API; Cloud Scheduler triggers monitoring; Firestore stores opportunities/evidence; GitLab or MongoDB MCP tracks repo tasks and persistent opportunity metadata.',
+    shortDescription: 'Hackathon Scout Agent turns fragmented AI/Web3 opportunity discovery into a daily execution queue with scoring, evidence, application packets, payout checks, and safe human-in-the-loop submission boundaries.',
+    architecture: 'The agent scores opportunity fit and generates submission copy; a local or generic web host serves the dashboard/API; scheduled monitors can trigger scans; a database can store opportunities/evidence; MCP integrations can track repo tasks or persistent opportunity metadata.',
     judgingMap: [
       { criterion: 'Impact', evidence: 'Helps solo builders convert skills into funded opportunities instead of missing deadlines across scattered platforms.' },
-      { criterion: 'Technical execution', evidence: 'Runnable Node agent, API, dashboard, deterministic fallback, tests, deployment manifest, and Gemini integration point.' },
-      { criterion: 'Use of Google Cloud / Gemini', evidence: 'Gemini-ready reasoning interface plus Cloud Run/Scheduler/Firestore production path.' },
-      { criterion: 'Responsible automation', evidence: 'Registration, wallet, KYC, and final submissions stay human-approved with explicit boundary text.' }
+      { criterion: 'Technical execution', evidence: 'Runnable Node agent, API, dashboard, deterministic fallback, tests, and optional AI enhancement point.' },
+      { criterion: 'Responsible automation', evidence: 'Registration, wallet, KYC, legal terms, and final submissions stay human-approved with explicit boundary text.' }
     ],
     humanApprovalRequired: ['platform registration', 'wallet signatures', 'KYC or legal terms', 'repo/public data exposure', 'final Devpost submission'],
     demoScript: [
       { time: '0:00-0:20', scene: 'Problem: opportunities are scattered and deadline-sensitive.' },
       { time: '0:20-0:50', scene: 'Run the scout and show ranked queue with evidence.' },
       { time: '0:50-1:40', scene: 'Open a P0 packet: scoring, pitch, next actions, deliverables, approval boundaries.' },
-      { time: '1:40-2:20', scene: 'Show API output and Google Cloud/Gemini/MCP architecture.' },
+      { time: '1:40-2:20', scene: 'Show API output, opportunity evidence, payout filtering, and integration architecture.' },
       { time: '2:20-3:00', scene: 'Impact: repeatable pipeline for independent builders to find and ship funded work.' }
     ]
   };
@@ -117,7 +115,7 @@ export function buildApplicationPacket(item) {
     evidence: item.evidence || { source: item.sourceMode || 'curated fallback', url: item.url, fetchedAt: new Date().toISOString() },
     pitch: `Hackathon Scout Agent turns opportunity discovery into action: it monitors AI/Web3 hackathons and bounties, ranks them by expected ROI, prepares application packets, and keeps the human in control for final submission.`,
     actionPlan: makeActionPlan(item),
-    deliverables: ['public GitHub repo', 'hosted Cloud Run demo URL', '~3 minute demo video', 'Devpost submission form', 'evidence-backed opportunity packet']
+    deliverables: ['public GitHub repo', 'hosted demo URL or local demo instructions', '~3 minute demo video if required', 'submission form draft', 'evidence-backed opportunity packet']
   };
   return { ...packet, submissionKit: generateSubmissionKit(packet) };
 }
@@ -126,7 +124,7 @@ function fallbackAiEnhancement(packet) {
   return {
     pitch: `${packet.title} is a strong target because it connects opportunity discovery with concrete submission execution, reducing missed deadlines and helping builders prioritize high-ROI work.`,
     risk: 'Medium: verify official rules and deadline before submitting; keep registration and wallet actions human-approved.',
-    moat: 'Evidence-first opportunity scoring plus reusable submission kits, Cloud Run deployment path, and MCP-ready persistence/task tracking.'
+    moat: 'Evidence-first opportunity scoring plus reusable submission kits, payout filtering, and MCP-ready persistence/task tracking.'
   };
 }
 
@@ -163,25 +161,10 @@ export async function scoutOpportunities(options = {}) {
   return packets;
 }
 
-export function buildCloudRunManifest({ service = 'hackathon-scout-agent', region = 'us-central1' } = {}) {
-  return {
-    service,
-    region,
-    env: ['GEMINI_API_KEY', 'PORT'],
-    commands: {
-      build: 'npm test',
-      local: 'PORT=8787 npm start',
-      deploy: `gcloud run deploy ${service} --source . --region ${region} --allow-unauthenticated --set-env-vars NODE_ENV=production`
-    },
-    scheduler: `gcloud scheduler jobs create http ${service}-daily --schedule="0 9 * * *" --uri="https://${service}-<hash>-${region}.a.run.app/api/opportunities" --http-method=GET --location=${region}`
-  };
-}
-
 export async function runAgent(options = {}) {
   const packets = await scoutOpportunities(options);
   await fs.mkdir('data', { recursive: true });
   await fs.writeFile('data/opportunities.json', JSON.stringify(packets, null, 2));
-  await fs.writeFile('data/cloud-run-manifest.json', JSON.stringify(buildCloudRunManifest({}), null, 2));
   return packets;
 }
 

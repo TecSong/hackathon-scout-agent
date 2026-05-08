@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildApplicationPacket, rankOpportunity, scoutOpportunities, generateSubmissionKit, buildCloudRunManifest, enhancePacketWithGemini } from '../src/agent.js';
+import { buildApplicationPacket, rankOpportunity, scoutOpportunities, generateSubmissionKit, enhancePacketWithGemini } from '../src/agent.js';
 
-test('ranks AI agent prize opportunities as P0', () => {
-  const packet = buildApplicationPacket({ platform:'Devpost', type:'hackathon', title:'Google Cloud Rapid Agent Hackathon', url:'https://rapid-agent.devpost.com/', deadline:'2026-06-11', reward:'$50,000', tags:['AI','agent','Gemini'], effort:4 });
+test('ranks active AI agent prize opportunities as P0', () => {
+  const packet = buildApplicationPacket({ platform:'BuyWhere', type:'developer_challenge', title:'Build With BuyWhere: AI Agent Developer Challenge', url:'https://buywhere.ai/challenge/', deadline:'2026-05-19', reward:'Apple M3 MacBook Air + API credits + swag', tags:['AI','agent','MCP'], effort:2 });
   assert.equal(packet.priority, 'P0');
   assert.ok(packet.actionPlan.length >= 5);
 });
@@ -18,18 +18,18 @@ test('scoutOpportunities merges live public results with safe fallback and evide
   const fakeFetch = async (url) => ({
     ok: true,
     json: async () => ({ hackathons: [{
-      title: 'Google Cloud Rapid Agent Hackathon',
-      url: 'https://rapid-agent.devpost.com/',
-      submission_period_dates: 'May 5 - Jun 11, 2026',
-      prize_amount: '$50,000',
-      themes: [{ name: 'AI' }, { name: 'Gemini' }]
+      title: 'Build with MeDo Hackathon',
+      url: 'https://medo.devpost.com/',
+      submission_period_dates: 'Apr 9 - May 20, 2026',
+      prize_amount: '$50,000+',
+      themes: [{ name: 'AI' }, { name: 'Low/No Code' }]
     }] })
   });
   const items = await scoutOpportunities({ fetchImpl: fakeFetch, includeFallback: false });
   assert.equal(items.length, 1);
   assert.equal(items[0].sourceMode, 'live-api');
-  assert.equal(items[0].evidence.url, 'https://rapid-agent.devpost.com/');
-  assert.ok(items[0].score >= 75);
+  assert.equal(items[0].evidence.url, 'https://medo.devpost.com/');
+  assert.ok(items[0].score >= 60);
 });
 
 test('curated fallback includes active BuyWhere and MeDo targets', async () => {
@@ -40,17 +40,17 @@ test('curated fallback includes active BuyWhere and MeDo targets', async () => {
 });
 
 test('generateSubmissionKit creates judge-ready assets and human approval boundaries', () => {
-  const packet = buildApplicationPacket({ platform:'Devpost', type:'hackathon', title:'Google Cloud Rapid Agent Hackathon', url:'https://rapid-agent.devpost.com/', deadline:'2026-06-11', reward:'$50,000', tags:['AI','agent','Gemini','Google Cloud'], effort:4 });
+  const packet = buildApplicationPacket({ platform:'BuyWhere', type:'developer_challenge', title:'Build With BuyWhere: AI Agent Developer Challenge', url:'https://buywhere.ai/challenge/', deadline:'2026-05-19', reward:'Apple M3 MacBook Air + API credits + swag', tags:['AI','agent','MCP'], effort:2 });
   const kit = generateSubmissionKit(packet);
   assert.match(kit.tagline, /agent/i);
   assert.ok(kit.judgingMap.some(x => x.criterion.includes('Impact')));
   assert.ok(kit.demoScript.some(x => x.time === '0:50-1:40'));
   assert.ok(kit.humanApprovalRequired.includes('final Devpost submission'));
-  assert.ok(kit.architecture.includes('Gemini'));
+  assert.ok(kit.architecture.includes('database'));
 });
 
 test('enhancePacketWithGemini uses Gemini-compatible API response when key is available', async () => {
-  const packet = buildApplicationPacket({ platform:'Devpost', type:'hackathon', title:'Google Cloud Rapid Agent Hackathon', url:'https://rapid-agent.devpost.com/', deadline:'2026-06-11', reward:'$50,000', tags:['AI','agent','Gemini'], effort:4 });
+  const packet = buildApplicationPacket({ platform:'BuyWhere', type:'developer_challenge', title:'Build With BuyWhere: AI Agent Developer Challenge', url:'https://buywhere.ai/challenge/', deadline:'2026-05-19', reward:'Apple M3 MacBook Air + API credits + swag', tags:['AI','agent','MCP'], effort:2 });
   const calls = [];
   const fakeFetch = async (url, options) => {
     calls.push({ url, options });
@@ -63,15 +63,8 @@ test('enhancePacketWithGemini uses Gemini-compatible API response when key is av
 });
 
 test('enhancePacketWithGemini falls back safely without credentials', async () => {
-  const packet = buildApplicationPacket({ platform:'Devpost', type:'hackathon', title:'Google Cloud Rapid Agent Hackathon', url:'https://rapid-agent.devpost.com/', deadline:'2026-06-11', reward:'$50,000', tags:['AI','agent','Gemini'], effort:4 });
+  const packet = buildApplicationPacket({ platform:'BuyWhere', type:'developer_challenge', title:'Build With BuyWhere: AI Agent Developer Challenge', url:'https://buywhere.ai/challenge/', deadline:'2026-05-19', reward:'Apple M3 MacBook Air + API credits + swag', tags:['AI','agent','MCP'], effort:2 });
   const enhanced = await enhancePacketWithGemini(packet, { apiKey: '' });
   assert.equal(enhanced.aiProvider, 'deterministic-fallback');
   assert.match(enhanced.aiEnhancement.pitch, /opportunity discovery/i);
-});
-
-test('buildCloudRunManifest documents deployable Google Cloud path', () => {
-  const manifest = buildCloudRunManifest({ service: 'hackathon-scout-agent', region: 'us-central1' });
-  assert.equal(manifest.service, 'hackathon-scout-agent');
-  assert.match(manifest.commands.deploy, /gcloud run deploy hackathon-scout-agent/);
-  assert.ok(manifest.env.includes('GEMINI_API_KEY'));
 });
