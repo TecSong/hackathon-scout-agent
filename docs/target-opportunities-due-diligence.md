@@ -81,7 +81,8 @@ URL: https://medo.devpost.com/
 - This is not a natural fit for the current Node/local scout-agent because submissions must be built with MeDo.
 - Better route: create a separate MeDo-built app inspired by scout-agent, e.g. a no-code "Opportunity Intake Dashboard" or "Hackathon Submission Checklist" using MeDo-generated UI and plugins/API integrations.
 - Working submission draft: `docs/medo-submission-draft.md`; recommended category is Work & Productivity.
-- Requires user/account actions: MeDo signup/invite credits, Devpost join/terms, final submission, optional video/social/Discord actions.
+- Prepared execution assets: `docs/medo-build-plan.md`, `docs/medo-devpost-submission-pack.md`, and `docs/medo-demo-video-script.md`.
+- Requires user/account actions: MeDo signup/invite credits, publishing a public MeDo app URL, Devpost join/terms, final submission, optional video/social/Discord actions.
 
 ## Current repo snapshot
 

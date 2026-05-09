@@ -101,6 +101,12 @@ Why it fits MeDo:
 - It complements the existing scout-agent repo without needing MeDo to rebuild the full Node app.
 - It demonstrates practical AI/no-code app generation and workflow automation.
 
+## Prepared assets
+
+- MeDo build plan and copy-paste prompts: `docs/medo-build-plan.md`
+- Devpost submission pack: `docs/medo-devpost-submission-pack.md`
+- Optional demo video script: `docs/medo-demo-video-script.md`
+
 ## Draft Devpost copy
 
 Short description:
