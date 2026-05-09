@@ -119,7 +119,7 @@ Problem solved:
 Hackathon builders often discover eligibility, demo, payout, or terms blockers too late. The app surfaces these blockers early and separates safe automation from actions that require the human to accept rules, sign in, or submit.
 
 Public project URL:
-TBD after building in MeDo.
+https://app-bitlzh1im9kx.appmedo.com/
 
 Demo video URL:
 Optional/TBD.

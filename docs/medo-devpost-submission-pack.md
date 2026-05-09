@@ -91,7 +91,7 @@ The MeDo-generated app is the primary working application for this submission. T
 
 ## Public project URL
 
-TBD after MeDo app is published.
+https://app-bitlzh1im9kx.appmedo.com/
 
 ## GitHub / reference URL
 
@@ -122,9 +122,9 @@ Why it fits:
 
 Before submitting, confirm:
 
-- [ ] Public MeDo app URL works.
-- [ ] App includes four flows: Intake, Risk Checklist, Submission Asset Generator, Final Review Dashboard.
-- [ ] Build with MeDo sample record is included.
+- [x] Public MeDo app URL works: https://app-bitlzh1im9kx.appmedo.com/
+- [x] App includes four flows: Intake, Risk Checklist, Submission Asset Generator, Final Review Dashboard.
+- [x] Build with MeDo sample record is included.
 - [ ] Devpost category selected: Work & Productivity.
 - [ ] Devpost Join completed by user.
 - [ ] Rules/terms accepted by user.
